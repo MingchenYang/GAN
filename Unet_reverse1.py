@@ -255,14 +255,14 @@ def train():
             g_gradients = Tape.gradient(g_loss, generator.trainable_variables)
             g_optimizer.apply_gradients(zip(g_gradients, generator.trainable_variables))
 
-            if k % 10 == 0:
+            if k % 500 == 0:
                 # print("Step:{}, Generator Loss:{:.4f}, L1 Loss:{:.4f}, SSIM Loss:{:.4f}, Discriminator Loss:{:.4f}".format(k, g_loss, g_loss_l1 / Lambda, g_loss_ssim / Lambda1, d_loss))
                 print("Step:{} Generator Loss:{:.4f} L1 Loss:{:.4f} SSIM Loss:{:.4f} Discriminator Loss:{:.4f}".format(k, g_loss, g_loss_l1 / Lambda_l1, g_loss_ssim / Lambda_ssim, d_loss))
                 # print("Step:{} Generator Loss:{:.4f} SSIM Loss:{:.4f} Discriminator Loss:{:.4f}".format(l, g_loss, g_loss_ssim / Lambda_ssim, d_loss)
                 output_save = np.reshape(gen_output[0], newshape=[L_node, W_node])
                 cv2.imwrite(Output_dir + str(k) + '.jpg', output_save * 255.)
 
-            if k % 100 == 0:
+            if k % 2000 == 0:
                 generator.save(Save_dir + str(k) + 'Gmodel' + '.h5')
                 discriminator.save(Save_dir + str(k) + 'Dmodel' + '.h5')
 
