@@ -6,13 +6,13 @@ import scipy.io as scio
 L_node = 256
 W_node = 256
 Num_video = 12  # UCSD Ped2 contains 12 videos
-# Num_video_per = [180, 180, 150, 180, 150, 180, 180, 180, 120, 150, 180, 180]  # UCSD ped2 each video contains 180/150/120 frames
-Num_video_per = [175, 175, 145, 175, 145, 175, 175, 175, 115, 145, 175, 175]
+Num_video_per = [180, 180, 150, 180, 150, 180, 180, 180, 120, 150, 180, 180]  # UCSD ped2 each video contains 180/150/120 frames
+# Num_video_per = [175, 175, 145, 175, 145, 175, 175, 175, 115, 145, 175, 175]
 Total_video_frames = sum(Num_video_per) - Num_video  # UCSD ped2 contains 1998 frames
 
 # Input_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_test_diff_removal/'
-Input_dir = 'S:/UCSD_ped2/Test256/Unet_Multi_test_diff/'
-Label_path = 'S:/UCSD_ped2/Test256/Ped2_label_Multi.mat'
+Input_dir = 'S:/UCSD_ped2/Test256/Unet_Reverse_test_diff/'
+Label_path = 'S:/UCSD_ped2/Test256/Ped2_label.mat'
 Output_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_test_diff_mask/'
 Input_name = os.listdir(Input_dir)
 
@@ -74,7 +74,7 @@ def train(pixel_threshold, num_threshold, TorF):
     num_record = 0
 
     # Get label from mat file
-    label = scio.loadmat(Label_path)['label_Multi']
+    label = scio.loadmat(Label_path)['label']
 
     # Initialize normalization value matrix
     normalize_value = np.zeros(shape=[Num_video, 1])
@@ -152,8 +152,8 @@ def train(pixel_threshold, num_threshold, TorF):
 
 def main(argv=None):
 
-    for i in np.arange(0.6, 1.0, 0.1):
-        for j in range(1, 256):
+    for i in np.arange(0.45, 1.0, 0.01):
+        for j in range(1, 2):
             TPR, FPR, ACC = train(i, j, 0)
             if ACC < 0.5 or TPR < 0.75:
                 break
