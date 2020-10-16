@@ -14,14 +14,14 @@ Learning_rate_disc = 0.0002
 Beta_1 = 0.5
 Beta_2 = 0.999
 E = 1e-08
-Lambda = 10
-Lambda1 = 10
+Lambda_l1 = 10
+Lambda_ssim = 10
 Training_steps = 5
 
 Image_dir = 'S:/UCSD_ped2/Train256/label_dis_removal/'  # Image dataset in reverse file is the input of generator
 Label_dir = 'S:/UCSD_ped2/Train256/training_removal/'  # Label dataset in reverse is the real image
-Output_dir = 'S:/UCSD_ped2/Train256/result_reverse_dis_removal/'
-Save_path = 'S:/UCSD_ped2/Train256/save_reverse_dis_removal/'
+Output_dir = 'S:/UCSD_ped2/Train256/result_Reverse_dis_removal/'
+Save_path = 'S:/UCSD_ped2/Train256/save_Reverse_dis_removal/'
 Image_path = [os.path.join(Image_dir, i) for i in os.listdir(Image_dir)]
 Label_path = [os.path.join(Label_dir, i) for i in os.listdir(Label_dir)]
 
@@ -135,7 +135,7 @@ def Generator():
     d8 = layers.Conv2D(64, 3, 1, 'same', activation='relu')(d8)
     d8 = layers.Conv2DTranspose(3, 5, 2, 'same')(d8)  # Upsampling
     d8 = layers.Activation('tanh')(d8)
-    # d8: (None, 256, 256, 1)
+    # d8: (None, 256, 256, 3)
     output = d8
     model = tf.keras.Model(input, output)
     return model
@@ -228,23 +228,28 @@ def train():
                 disc_fake = discriminator(disc_input_fake, training=False)
                 # print(2, disc_fake[0, ])
                 g_loss_entropy = cross_entropy(tf.ones_like(disc_fake) * 0.9, disc_fake)
-                # g_loss_l1 = Lambda * tf.reduce_mean(tf.abs(gen_output - data))
-                # g_loss_ssim = Lambda1 * tf.reduce_mean(1 - tf.image.ssim(gen_output, data, max_val=1))
-                g_loss_l1_c1 = tf.reduce_mean(tf.abs(gen_output[:, :, :, 0] - data[:, :, :, 0]))
-                g_loss_l1_c2 = tf.reduce_mean(tf.abs(gen_output[:, :, :, 1] - data[:, :, :, 1]))
-                g_loss_l1_c3 = tf.reduce_mean(tf.abs(gen_output[:, :, :, 2] - data[:, :, :, 2]))
-                g_loss_l1 = Lambda * (g_loss_l1_c1 + g_loss_l1_c2 + g_loss_l1_c2 + g_loss_l1_c3)
-                g_loss = g_loss_entropy + g_loss_l1
+                g_loss_l1 = Lambda_l1 * tf.reduce_mean(tf.abs(gen_output - data))
+                # g_loss_l1_c1 = tf.reduce_mean(tf.abs(gen_output[:, :, :, 0] - data[:, :, :, 0]))
+                # g_loss_l1_c2 = tf.reduce_mean(tf.abs(gen_output[:, :, :, 1] - data[:, :, :, 1]))
+                # g_loss_l1_c3 = tf.reduce_mean(tf.abs(gen_output[:, :, :, 2] - data[:, :, :, 2]))
+                # g_loss_l1 = Lambda_l1 * (g_loss_l1_c1 + g_loss_l1_c2 + g_loss_l1_c3)
+                g_loss_ssim = Lambda_ssim * tf.reduce_mean(1 - tf.image.ssim(gen_output, data, max_val=1))
+                # g_loss_ssim_c1 = tf.reduce_mean(1 - tf.image.ssim(gen_output[:, :, :, 0], data[:, :, :, 0], max_val=1))
+                # g_loss_ssim_c2 = tf.reduce_mean(1 - tf.image.ssim(gen_output[:, :, :, 1], data[:, :, :, 1], max_val=1))
+                # g_loss_ssim_c3 = tf.reduce_mean(1 - tf.image.ssim(gen_output[:, :, :, 2], data[:, :, :, 2], max_val=1))
+                # g_loss_ssim = Lambda_ssim * (g_loss_ssim_c1 + g_loss_ssim_c2 + g_loss_ssim_c3)
+                g_loss = g_loss_entropy + g_loss_l1 + g_loss_ssim
             g_gradients = Tape.gradient(g_loss, generator.trainable_variables)
             g_optimizer.apply_gradients(zip(g_gradients, generator.trainable_variables))
 
             if k % 100 == 0:
                 # print("Step:{} Generator Loss:{:.4f} Discriminator Loss:{:.4f}".format(k, g_loss, d_loss))
-                print("Step:{} Generator Loss:{:.4f} L1 Loss:{:.4f} Discriminator Loss:{:.4f}".format(k, g_loss, g_loss_l1 / Lambda, d_loss))
-                # print("Step:{} Generator Loss:{:.4f} L1 Loss:{:.4f} SSIM Loss:{:.4f} Discriminator Loss:{:.4f}".format(k, g_loss, g_loss_l1 / Lambda, g_loss_ssim / Lambda1, d_loss))
+                # print("Step:{} Generator Loss:{:.4f} L1 Loss:{:.4f} Discriminator Loss:{:.4f}".format(k, g_loss, g_loss_l1 / Lambda_l1, d_loss))
+                print("Step:{} Generator Loss:{:.4f} L1 Loss:{:.4f} SSIM Loss:{:.4f} Discriminator Loss:{:.4f}".format(k, g_loss, g_loss_l1 / Lambda_l1, g_loss_ssim / Lambda_ssim, d_loss))
                 output_save = np.reshape(gen_output[0], newshape=[L_node, W_node, 3])
-                cv2.imwrite(Output_dir + str(k) + '.jpg', recover(output_save * 255.))
-            if k % 2500 == 0:
+                output_save = cv2.cvtColor(output_save, cv2.COLOR_RGB2BGR)
+                cv2.imwrite(Output_dir + str(k) + '.png', recover(output_save * 255.))
+            if k % 2000 == 0:
                 generator.save(Save_path + str(k) + 'Gmodel' + '.h5')
                 discriminator.save(Save_path + str(k) + 'Dmodel' + '.h5')
 

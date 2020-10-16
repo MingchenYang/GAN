@@ -7,7 +7,7 @@ W_node = 360
 Channel = 3
 Kernel_size = 3
 Sigma = 3
-Radius = 15
+Radius = 5
 
 Input_dir = 'S:/UCSD_Anomaly_Dataset.v1p2/UCSDped2/Train/'
 Output_dir = 'S:/UCSD_ped2/Train/training_removal/'

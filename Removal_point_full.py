@@ -6,9 +6,9 @@ import numpy as np
 L_node = 240
 W_node = 360
 Channel = 3
-Kernel_size = 3
-Sigma = 3
-Radius = 15
+# Kernel_size = 3
+# Sigma = 3
+Radius = 5
 
 Input_dir = 'S:/UCSD_Anomaly_Dataset.v1p2/UCSDped2/Train/'
 Output_dir = 'S:/UCSD_ped2/Train/training_removal_background_full/'
@@ -30,8 +30,8 @@ def optflow(prev, next):
             w_right = max([w + Radius + 1, 0])
 
             if np.mean(diff[l_left: l_right, w_left: w_right]) > 3:
-                # image[l, w] = prev[l, w]
-                image[l, w] = 255
+                image[l, w] = prev[l, w]
+                # image[l, w] = 255
     return image
 
 

@@ -7,8 +7,11 @@ L_node = 240
 W_node = 360
 Channel = 3
 
-Input_dir = 'S:/UCSD_ped2/Train/training_removal_row_full_pack/'
-Output_dir = 'S:/UCSD_ped2/Train/label_dis_removal_full/'
+# Input_dir = 'S:/UCSD_ped2/Train/training_removal_row_full_pack/'
+# Output_dir = 'S:/UCSD_ped2/Train/label_dis_removal_full/'
+
+Input_dir = 'S:/UCSD_Anomaly_Dataset.v1p2/UCSDped2/Train/'
+Output_dir = 'S:/UCSD_ped2/Train/label_dis/'
 
 Input_path = glob.glob(Input_dir + 'Train*')
 dis = cv2.DISOpticalFlow_create(2)
@@ -17,7 +20,7 @@ dis = cv2.DISOpticalFlow_create(2)
 def train():
     k = 1
     for i, path in enumerate(Input_path):
-        Input_name = glob.glob(path + '/*.png')
+        Input_name = glob.glob(path + '/*.tif')
         mag_max = 0
 
         # -----------------------------------------------
@@ -63,8 +66,8 @@ def train():
             # Get HSV matrix
             hsv = np.zeros(shape=(flow.shape[0], flow.shape[1], 3), dtype=np.uint8)
             hsv[..., 0] = ang * 180 / np.pi / 2
-            hsv[..., 2] = 255
-            hsv[..., 1] = cv2.normalize(mag, None, 0, 255, cv2.NORM_MINMAX)
+            hsv[..., 1] = 255
+            hsv[..., 2] = cv2.normalize(mag, None, 0, 255, cv2.NORM_MINMAX)
             # hsv[..., 1] = 255 / mag_max * mag
             # for l in range(L_node):
             #    print(hsv[l, :, 1])
