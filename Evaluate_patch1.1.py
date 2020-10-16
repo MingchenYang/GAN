@@ -12,7 +12,7 @@ Num_video = 12
 Num_video_per = [180, 180, 150, 180, 150, 180, 180, 180, 120, 150, 180, 180]
 Total_video_frames = sum(Num_video_per) - Num_video
 
-Input_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_test_diff_removal/'
+Input_dir = 'S:/UCSD_ped2/Test256/Unet_Reverse_test_diff/'
 Label_path = 'S:/UCSD_ped2/Test256/Ped2_label.mat'
 Output_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_est_diff_mask/'
 
@@ -113,8 +113,8 @@ def train(patch_threshold, num_threshold, TorF):
 
 
 def main(argv=None):
-    for i in np.arange(0.06, 0.07, 0.01):
-        for j in range(391, 411):
+    for i in np.arange(0.03, 0.07, 0.01):
+        for j in range(256, 512):
             TPR, FPR, ACC = train(i, j, 0)
             if ACC < 0.5 or TPR < 0.5 or FPR < 0.05:
                 break
