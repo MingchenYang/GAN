@@ -10,10 +10,10 @@ Channel = 3
 # Input_dir = 'S:/UCSD_ped2/Train/training_removal_row_full_pack/'
 # Output_dir = 'S:/UCSD_ped2/Train/label_dis_removal_full/'
 
-Input_dir = 'S:/UCSD_Anomaly_Dataset.v1p2/UCSDped2/Train/'
-Output_dir = 'S:/UCSD_ped2/Train/label_dis/'
+Input_dir = 'S:/UCSD_Anomaly_Dataset.v1p2/UCSDped2/Test/'
+Output_dir = 'S:/UCSD_ped2/Test/label_dis/'
 
-Input_path = glob.glob(Input_dir + 'Train*')
+Input_path = glob.glob(Input_dir + 'Test*')
 dis = cv2.DISOpticalFlow_create(2)
 
 

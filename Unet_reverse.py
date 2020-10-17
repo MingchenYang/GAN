@@ -14,7 +14,7 @@ Learning_rate_disc = 0.0002
 Beta_1 = 0.5
 Beta_2 = 0.999
 E = 1e-08
-Lambda_l1 = 10
+Lambda_l1 = 20
 Lambda_ssim = 10
 Training_steps = 5
 
@@ -233,19 +233,19 @@ def train():
                 # g_loss_l1_c2 = tf.reduce_mean(tf.abs(gen_output[:, :, :, 1] - data[:, :, :, 1]))
                 # g_loss_l1_c3 = tf.reduce_mean(tf.abs(gen_output[:, :, :, 2] - data[:, :, :, 2]))
                 # g_loss_l1 = Lambda_l1 * (g_loss_l1_c1 + g_loss_l1_c2 + g_loss_l1_c3)
-                g_loss_ssim = Lambda_ssim * tf.reduce_mean(1 - tf.image.ssim(gen_output, data, max_val=1))
+                # g_loss_ssim = Lambda_ssim * tf.reduce_mean(1 - tf.image.ssim(gen_output, data, max_val=1))
                 # g_loss_ssim_c1 = tf.reduce_mean(1 - tf.image.ssim(gen_output[:, :, :, 0], data[:, :, :, 0], max_val=1))
                 # g_loss_ssim_c2 = tf.reduce_mean(1 - tf.image.ssim(gen_output[:, :, :, 1], data[:, :, :, 1], max_val=1))
                 # g_loss_ssim_c3 = tf.reduce_mean(1 - tf.image.ssim(gen_output[:, :, :, 2], data[:, :, :, 2], max_val=1))
                 # g_loss_ssim = Lambda_ssim * (g_loss_ssim_c1 + g_loss_ssim_c2 + g_loss_ssim_c3)
-                g_loss = g_loss_entropy + g_loss_l1 + g_loss_ssim
+                g_loss = g_loss_entropy + g_loss_l1
             g_gradients = Tape.gradient(g_loss, generator.trainable_variables)
             g_optimizer.apply_gradients(zip(g_gradients, generator.trainable_variables))
 
             if k % 100 == 0:
                 # print("Step:{} Generator Loss:{:.4f} Discriminator Loss:{:.4f}".format(k, g_loss, d_loss))
-                # print("Step:{} Generator Loss:{:.4f} L1 Loss:{:.4f} Discriminator Loss:{:.4f}".format(k, g_loss, g_loss_l1 / Lambda_l1, d_loss))
-                print("Step:{} Generator Loss:{:.4f} L1 Loss:{:.4f} SSIM Loss:{:.4f} Discriminator Loss:{:.4f}".format(k, g_loss, g_loss_l1 / Lambda_l1, g_loss_ssim / Lambda_ssim, d_loss))
+                print("Step:{} Generator Loss:{:.4f} L1 Loss:{:.4f} Discriminator Loss:{:.4f}".format(k, g_loss, g_loss_l1 / Lambda_l1, d_loss))
+                # print("Step:{} Generator Loss:{:.4f} L1 Loss:{:.4f} SSIM Loss:{:.4f} Discriminator Loss:{:.4f}".format(k, g_loss, g_loss_l1 / Lambda_l1, g_loss_ssim / Lambda_ssim, d_loss))
                 output_save = np.reshape(gen_output[0], newshape=[L_node, W_node, 3])
                 output_save = cv2.cvtColor(output_save, cv2.COLOR_RGB2BGR)
                 cv2.imwrite(Output_dir + str(k) + '.png', recover(output_save * 255.))

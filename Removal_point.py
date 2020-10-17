@@ -9,10 +9,10 @@ Kernel_size = 3
 Sigma = 3
 Radius = 5
 
-Input_dir = 'S:/UCSD_Anomaly_Dataset.v1p2/UCSDped2/Train/'
-Output_dir = 'S:/UCSD_ped2/Train/training_removal/'
+Input_dir = 'S:/UCSD_Anomaly_Dataset.v1p2/UCSDped2/Test/'
+Output_dir = 'S:/UCSD_ped2/Test/training_removal/'
 
-Input_path = glob.glob(Input_dir + 'Train*')
+Input_path = glob.glob(Input_dir + 'Test*')
 
 
 def optflow(prev, next):

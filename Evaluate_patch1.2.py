@@ -114,7 +114,7 @@ def train(patch_threshold, num_threshold, TorF):
 
 def main(argv=None):
     for i in np.arange(0.03, 0.07, 0.01):
-        for j in range(1024, 1280):
+        for j in range(768, 1024):
             TPR, FPR, ACC = train(i, j, 0)
             if ACC < 0.5 or TPR < 0.5 or FPR < 0.05:
                 break

@@ -4,9 +4,9 @@ import cv2
 L_node = 240
 W_node = 360
 
-Input_dir = 'S:/UCSD_ped2/Train/label_dis/'
-Back_dir = 'S:/UCSD_ped2/Train/training_removal/'
-Output_dir = 'S:/UCSD_ped2/Train/label_dis_removal/'
+Input_dir = 'S:/UCSD_ped2/Test/label_dis/'
+Back_dir = 'S:/UCSD_ped2/Test/training_removal/'
+Output_dir = 'S:/UCSD_ped2/Test/label_dis_removal/'
 
 
 def train():
