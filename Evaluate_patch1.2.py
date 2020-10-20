@@ -106,15 +106,15 @@ def train(patch_threshold, num_threshold, TorF):
     TPR = TP / (TP + FN)
     FPR = FP / (FP + TN)
     ACC = (TP + TN) / Total_video_frames
-    print('When pixel threshold = {:.2f}, num threshold = {}, TPR = {:.4f}, FPR = {:.4f}, ACC = {:.4f}'.format(
+    print('When pixel threshold = {:.3f}, num threshold = {}, TPR = {:.4f}, FPR = {:.4f}, ACC = {:.4f}'.format(
         patch_threshold, num_threshold, TPR, FPR, ACC))
 
     return TPR, FPR, ACC
 
 
 def main(argv=None):
-    for i in np.arange(0.03, 0.07, 0.01):
-        for j in range(768, 1024):
+    for i in np.arange(0.01, 1.0, 0.001):
+        for j in range(256, 257):
             TPR, FPR, ACC = train(i, j, 0)
             if ACC < 0.5 or TPR < 0.5 or FPR < 0.05:
                 break
