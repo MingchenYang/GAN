@@ -7,9 +7,9 @@ L_node = 256
 W_node = 256
 Channel = 1
 
-Image_dir = 'S:/UCSD_ped2/Test256/label_dis_removal/'  # Image dataset in reverse file is the input of generator
-Label_dir = 'S:/UCSD_ped2/Test256/training_removal/'  # Label dataset in reverse is the real image
-Output_dir = 'S:/UCSD_ped2/Test256/Unet_Reverse_dis_removal_test/'
+Image_dir = 'S:/UCSD_ped2/Train256/label_dis_removal/'  # Image dataset in reverse file is the input of generator
+Label_dir = 'S:/UCSD_ped2/Train256/training_removal/'  # Label dataset in reverse is the real image
+Output_dir = 'S:/UCSD_ped2/Train256/Unet_Reverse_dis_removal_test/'
 Save_path = 'S:/UCSD_ped2/Train256/save_Reverse_dis_removal/100000Gmodel.h5'
 
 
