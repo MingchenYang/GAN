@@ -1,4 +1,4 @@
-# UCSD ped2 dataset
+# UCSD ped2 dataset: grayscale motion features + appearance features
 import os
 import cv2
 import numpy as np
@@ -12,12 +12,12 @@ Num_video = 12
 Num_video_per = [180, 180, 150, 180, 150, 180, 180, 180, 120, 150, 180, 180]
 Total_video_frames = sum(Num_video_per) - Num_video
 
-Input_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_dis_test_diff/'
+Input_dir1 = 'S:/UCSD_ped2/Test256/Unet_Reverse_test_diff/'
+Input_dir2 = 'S:/UCSD_ped2/Test256/Unet_Reverse_test_diff/'
 Label_path = 'S:/UCSD_ped2/Test256/Ped2_label.mat'
 Output_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_est_diff_mask/'
 
-Input_name = os.listdir(Input_dir)
-detect = np.zeros(shape=[Total_video_frames, 1])
+Input_name1 = os.listdir(Input_dir1)
 
 
 def read_and_load(path):
@@ -26,7 +26,7 @@ def read_and_load(path):
     return img
 
 
-def max_value(num_sequence, num_record):
+def max_value(num_sequence, num_record, Input_dir, Input_name):
     max_val = 0
     num = num_record
 
@@ -65,7 +65,7 @@ def abnormal_detect(img, patch_threshold, num_threshold):
     return False
 
 
-def normalize_and_detect(num_sequence, num_record, max_val, patch_threshold, num_threshold):
+def normalize_and_detect(num_sequence, num_record, max_val, patch_threshold, num_threshold, Input_dir, Input_name):
     num = num_record
 
     for num_image in range(Num_video_per[num_sequence] - 1):
@@ -83,6 +83,7 @@ def normalize_and_detect(num_sequence, num_record, max_val, patch_threshold, num
 
 def train(patch_threshold, num_threshold, TorF):
     num_record = 0
+    detect = np.zeros(shape=[Total_video_frames, 1])
 
     # Get label from mat file
     label = scio.loadmat(Label_path)['label']

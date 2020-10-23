@@ -2,13 +2,13 @@ import os
 import cv2
 import numpy as np
 
-# Label_dir = 'S:/UCSD_ped2/Test256/training_Multi_frame/'
-# Result_dir = 'S:/UCSD_ped2/Test256/Unet_Multi_test/'
-# Output_dir = 'S:/UCSD_ped2/Test256/Unet_Multi_test_diff/'
+Label_dir = 'S:/UCSD_ped2/Test256/training/'
+Result_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_dis_test/'
+Output_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_dis_test_diff/'
 
-Label_dir = 'S:/UCSD_ped2/Test256/label/'
-Result_dir = 'S:/UCSD_ped2/Test256/Unet_Reverse_test/'
-Output_dir = 'S:/UCSD_ped2/Test256/Unet_Reverse_test_diff/'
+# Label_dir = 'S:/UCSD_ped2/Test256/label/'
+# Result_dir = 'S:/UCSD_ped2/Test256/Unet_Reverse_test/'
+# Output_dir = 'S:/UCSD_ped2/Test256/Unet_Reverse_test_diff/'
 
 
 def read_and_load(path):
