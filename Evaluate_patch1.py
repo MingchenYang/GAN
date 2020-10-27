@@ -12,7 +12,7 @@ Num_video = 12
 Num_video_per = [180, 180, 150, 180, 150, 180, 180, 180, 120, 150, 180, 180]
 Total_video_frames = sum(Num_video_per) - Num_video
 
-Input_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_dis_test_diff/'
+Input_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_Reverse_com_test_diff/'
 Label_path = 'S:/UCSD_ped2/Test256/Ped2_label.mat'
 Output_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_est_diff_mask/'
 

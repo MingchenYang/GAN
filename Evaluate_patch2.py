@@ -18,6 +18,8 @@ Label_path = 'S:/UCSD_ped2/Test256/Ped2_label.mat'
 Output_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_est_diff_mask/'
 
 Input_name1 = os.listdir(Input_dir1)
+Input_name2 = os.listdir(Input_dir2)
+detect = np.zeros(shape=[Total_video_frames, 1])
 
 
 def read_and_load(path):
@@ -83,14 +85,15 @@ def normalize_and_detect(num_sequence, num_record, max_val, patch_threshold, num
 
 def train(patch_threshold, num_threshold, TorF):
     num_record = 0
-    detect = np.zeros(shape=[Total_video_frames, 1])
 
     # Get label from mat file
     label = scio.loadmat(Label_path)['label']
 
     for num_sequence in range(Num_video):
-        max_val = max_value(num_sequence, num_record)
-        num_record = normalize_and_detect(num_sequence, num_record, max_val, patch_threshold, num_threshold)
+        max_val1 = max_value(num_sequence, num_record, Input_dir1, Input_name1)
+        num_record1 = normalize_and_detect(num_sequence, num_record, max_val1, patch_threshold, num_threshold, Input_dir1, Input_name1)
+        max_val2 = max_value(num_sequence, num_record, Input_dir2, Input_name2)
+        num_record1 = normalize_and_detect(num_sequence, num_record, max_val2, patch_threshold, num_threshold, Input_dir2, Input_name2)
         # print(num_record)  # 179, 358, 507, 686, 835, 1014, 1193, 1372, 1491, 1640, 1819, 1998
 
     TP, TN, FP, FN = 0, 0, 0, 0

@@ -10,7 +10,7 @@ Batch_size = 20
 L_node = 256
 W_node = 256
 Channel = 1
-Learning_rate_gen = 0.0002
+Learning_rate_gen = 0.0001
 Learning_rate_disc = 0.0002
 Beta_1 = 0.5
 Beta_2 = 0.999
@@ -21,7 +21,7 @@ Training_steps = 5
 
 Image_dir = 'S:/UCSD_ped2/Train256/training/'
 Mosaic_dir = 'S:/UCSD_ped2/Train256/training_Mosaic/'
-Label_dir = 'S:/UCSD_ped2/Train256/label_dis_removal/'
+Label_dir = 'S:/UCSD_ped2/Train256/Unet_Reverse_dis_removal_test/'
 Output_dir = 'S:/UCSD_ped2/Train256/result_Mosaic_dis/'
 Save_path = 'S:/UCSD_ped2/Train256/save_Mosaic_dis/'
 Image_path = [os.path.join(Image_dir, i) for i in os.listdir(Image_dir)]

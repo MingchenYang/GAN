@@ -9,9 +9,9 @@ Channel = 1
 
 Image_dir = 'S:/UCSD_ped2/Test256/training/'
 Mosaic_dir = 'S:/UCSD_ped2/Test256/training_Mosaic/'
-Label_dir = 'S:/UCSD_ped2/Test256/label_dis_removal/'
+Label_dir = 'S:/UCSD_ped2/Test256/Unet_Reverse_dis_removal_test/'
 Output_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_dis_test/'
-Save_path = 'S:/UCSD_ped2/Train256/save_Mosaic_dis/80000Gmodel.h5'
+Save_path = 'S:/UCSD_ped2/Train256/save_Mosaic_dis/48000Gmodel.h5'
 # Save_path = 'C:/Users/yangm90/Documents/pycharm transfer files/8.0/save_Mosaic/200000Gmodel.h5'
 
 
