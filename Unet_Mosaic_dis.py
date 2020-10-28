@@ -21,7 +21,7 @@ Training_steps = 5
 
 Image_dir = 'S:/UCSD_ped2/Train256/training/'
 Mosaic_dir = 'S:/UCSD_ped2/Train256/training_Mosaic/'
-Label_dir = 'S:/UCSD_ped2/Train256/Unet_Reverse_dis_removal_test/'
+Label_dir = 'S:/UCSD_ped2/Train256/label_dis_removal/'
 Output_dir = 'S:/UCSD_ped2/Train256/result_Mosaic_dis/'
 Save_path = 'S:/UCSD_ped2/Train256/save_Mosaic_dis/'
 Image_path = [os.path.join(Image_dir, i) for i in os.listdir(Image_dir)]

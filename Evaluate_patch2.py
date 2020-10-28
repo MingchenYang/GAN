@@ -92,8 +92,8 @@ def train(patch_threshold, num_threshold, TorF):
     for num_sequence in range(Num_video):
         max_val1 = max_value(num_sequence, num_record, Input_dir1, Input_name1)
         num_record1 = normalize_and_detect(num_sequence, num_record, max_val1, patch_threshold, num_threshold, Input_dir1, Input_name1)
-        max_val2 = max_value(num_sequence, num_record, Input_dir2, Input_name2)
-        num_record1 = normalize_and_detect(num_sequence, num_record, max_val2, patch_threshold, num_threshold, Input_dir2, Input_name2)
+        max_val1 = max_value(num_sequence, num_record, Input_dir2, Input_name2)
+        num_record1 = normalize_and_detect(num_sequence, num_record, max_val1, patch_threshold, num_threshold, Input_dir2, Input_name1)
         # print(num_record)  # 179, 358, 507, 686, 835, 1014, 1193, 1372, 1491, 1640, 1819, 1998
 
     TP, TN, FP, FN = 0, 0, 0, 0

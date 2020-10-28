@@ -7,14 +7,14 @@ L_node = 256
 W_node = 256
 Channel = 1
 
-Image_dir = 'S:/pix2pix optflow/Test256/training/'
-Mosaic_dir = 'S:/pix2pix optflow/Test256/training_Mosaic/'
-Label_dir = 'S:/pix2pix optflow/Test256/label/'
-# Output_dir = 'S:/pix2pix optflow/Test256/Unet_reverse_test/'
-# Save_path_G = 'S:/pix2pix optflow/Train256/save_reverse/10000Gmodel.h5'
-# Save_path_D = 'S:/pix2pix optflow/Train256/save_reverse/10000Dmodel.h5'
-Save_path_G = 'C:/Users/yangm90/Documents/pycharm transfer files/8.0/save_Mosaic/200000Gmodel.h5'
-Save_path_D = 'C:/Users/yangm90/Documents/pycharm transfer files/8.0/save_Mosaic/200000Dmodel.h5'
+Image_dir = 'S:/UCSD_ped2/Test256/training/'
+Mosaic_dir = 'S:/UCSD_ped2/Test256/training_Mosaic/'
+Label_dir = 'S:/UCSD_ped2/Test256/label/'
+# Output_dir = 'S:/UCSD_ped2/Test256/Unet_reverse_test/'
+Save_path_G = 'S:/UCSD_ped2/Train256/save_Mosaic/60000Gmodel.h5'
+Save_path_D = 'S:/UCSD_ped2/Train256/save_Mosaic/60000Dmodel.h5'
+# Save_path_G = 'C:/Users/yangm90/Documents/pycharm transfer files/8.0/save_Mosaic/200000Gmodel.h5'
+# Save_path_D = 'C:/Users/yangm90/Documents/pycharm transfer files/8.0/save_Mosaic/200000Dmodel.h5'
 
 
 def read_and_load(path):
@@ -47,7 +47,7 @@ def train():
         gen_input = tf.keras.layers.concatenate([mosaic, label], 3)
         gen_output = GModel(gen_input, training=False)
 
-        disc_input = tf.keras.layers.concatenate([gen_output, label], 3)
+        disc_input = tf.keras.layers.concatenate([gen_output, mosaic, label], 3)
         disc_output = DModel(disc_input, training=False)
         disc_output = disc_output.numpy()
         print(k, disc_output[0, 0])

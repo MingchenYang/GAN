@@ -3,8 +3,8 @@ import cv2
 import numpy as np
 
 Label_dir = 'S:/UCSD_ped2/Test256/training/'
-Result_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_dis_test/'
-Output_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_dis_test_diff/'
+Result_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_test_Reverse/'
+Output_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_test_Reverse_diff/'
 
 # Label_dir = 'S:/UCSD_ped2/Test256/label/'
 # Result_dir = 'S:/UCSD_ped2/Test256/Unet_Reverse_test/'
