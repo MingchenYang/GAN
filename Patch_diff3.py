@@ -1,4 +1,5 @@
 # Get the threhold in whole sequence 199 images
+# UCSD ped2 dataset
 import os
 import cv2
 import math

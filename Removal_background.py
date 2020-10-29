@@ -1,12 +1,12 @@
 import os
 import cv2
 
-L_node = 240
-W_node = 360
+L_node = 256
+W_node = 256
 
-Input_dir = 'S:/UCSD_ped2/Test/label_dis/'
-Back_dir = 'S:/UCSD_ped2/Test/training_removal/'
-Output_dir = 'S:/UCSD_ped2/Test/label_dis_removal/'
+Input_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_dis_test_diff/'
+Back_dir = 'S:/UCSD_ped2/Test256/label_dis_removal/'
+Output_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_dis_test_diff_removal/'
 
 
 def train():

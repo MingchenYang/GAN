@@ -138,7 +138,7 @@ def Generator():
 
 
 def Discriminator():
-    input = tf.keras.Input(shape=[L_node, W_node, Channel*3])
+    input = tf.keras.Input(shape=[L_node, W_node, Channel * 3])
     # input: (None, 256, 256, 1)
     h0 = layers.Conv2D(64, 5, 2, 'same')(input)
     h0 = layers.LeakyReLU(0.2)(h0)
@@ -235,7 +235,12 @@ def train():
             if k % 100 == 0:
                 # print("Step:{} Generator Loss:{:.4f} Discriminator Loss:{:.4f}".format(k, g_loss, d_loss))
                 # print("Step:{} Generator Loss:{:.4f} L1 Loss:{:.4f} Discriminator Loss:{:.4f}".format(k, g_loss, g_loss_l1 / Lambda, d_loss))
-                print("Step:{} Generator Loss:{:.4f} L1 Loss:{:.4f} SSIM Loss:{:.4f} Discriminator Loss:{:.4f}".format(k, g_loss, g_loss_l1 / Lambda, g_loss_ssim / Lambda1, d_loss))
+                print(
+                    "Step:{} Generator Loss:{:.4f} L1 Loss:{:.4f} SSIM Loss:{:.4f} Discriminator Loss:{:.4f}".format(k,
+                                                                                                                     g_loss,
+                                                                                                                     g_loss_l1 / Lambda,
+                                                                                                                     g_loss_ssim / Lambda1,
+                                                                                                                     d_loss))
                 output_save = np.reshape(gen_output[0], newshape=[L_node, W_node])
                 cv2.imwrite(Output_dir + str(k) + '.jpg', output_save * 255.)
             if k % 1000 == 0:
@@ -249,5 +254,5 @@ def main(argv=None):
     train()
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     main()
