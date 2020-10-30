@@ -58,40 +58,47 @@ def build_generator():
 
     l3 = layers.Conv2D(64, 3, 1, 'same', activation='relu')(l1)  # (None, 256, 256, 64)
 
-    l4_1 = layers.Conv2D(128, 3, 2, 'same')(l3)  # (None, 128, 128, 128)
-    l4_1 = layers.BatchNormalization()(l4_1)
-    l4_1 = layers.LeakyReLU(0.2)(l4_1)
+    l4_1 = layers.Conv2D(128, 5, 2, 'same')(l3)  # (None, 128, 128, 128)
 
-    l5_1 = layers.Conv2D(256, 3, 2, 'same')(l4_1)  # (None, 64, 64, 256)
+    l5_1 = layers.LeakyReLU(0.2)(l4_1)
+    l5_1 = layers.Conv2D(128, 3, 1, 'same', activation='relu')(l5_1)
+    l5_1 = layers.Conv2D(256, 5, 2, 'same')(l5_1)  # (None, 64, 64, 256)
     l5_1 = layers.BatchNormalization()(l5_1)
-    l5_1 = layers.LeakyReLU(0.2)(l5_1)
 
-    l6_1 = layers.Conv2D(512, 3, 2, 'same')(l5_1)  # (None, 32, 32, 512)
+    l6_1 = layers.LeakyReLU(0.2)(l5_1)
+    l6_1 = layers.Conv2D(256, 3, 1, 'same', activation='relu')(l6_1)
+    l6_1 = layers.Conv2D(512, 5, 2, 'same')(l6_1)  # (None, 32, 32, 512)
     l6_1 = layers.BatchNormalization()(l6_1)
-    l6_1 = layers.LeakyReLU(0.2)(l6_1)
 
-    l7_1 = layers.Conv2D(512, 3, 2, 'same')(l6_1)  # (None, 16, 16, 512)
+    l7_1 = layers.LeakyReLU(0.2)(l6_1)
+    l7_1 = layers.Conv2D(512, 3, 1, 'same', activation='relu')(l7_1)
+    l7_1 = layers.Conv2D(512, 5, 2, 'same')(l7_1)  # (None, 16, 16, 512)
     l7_1 = layers.BatchNormalization()(l7_1)
-    l7_1 = layers.LeakyReLU(0.2)(l7_1)
 
-    l8_1 = layers.Conv2DTranspose(512, 3, 2, 'same')(l7_1)  # (None, 32, 32, 512)
+    l8_1 = layers.Activation('relu')(l7_1)
+    l8_1 = layers.Conv2D(512, 3, 1, 'same', activation='relu')(l8_1)
+    l8_1 = layers.Conv2DTranspose(512, 5, 2, 'same')(l8_1)  # (None, 32, 32, 512)
     l8_1 = layers.BatchNormalization()(l8_1)
     l8_1 = layers.Dropout(0.3)(l8_1)
-    l8_1 = layers.Activation('relu')(l8_1)
+    l8_1 = layers.concatenate([l8_1, l6_1], 3)  # (None, 32, 32, 512*2)
 
-    l9_1 = layers.Conv2DTranspose(256, 3, 2, 'same')(l8_1)  # (None, 64, 64, 256)
+    l9_1 = layers.Activation('relu')(l8_1)
+    l9_1 = layers.Conv2D(512, 3, 1, 'same', activation='relu')(l9_1)
+    l9_1 = layers.Conv2DTranspose(256, 5, 2, 'same')(l9_1)  # (None, 64, 64, 256)
     l9_1 = layers.BatchNormalization()(l9_1)
     l9_1 = layers.Dropout(0.3)(l9_1)
-    l9_1 = layers.Activation('relu')(l9_1)
+    l9_1 = layers.concatenate([l9_1, l5_1], 3)  # (None, 64, 64, 256*2)
 
-    l10_1 = layers.Conv2DTranspose(128, 3, 2, 'same')(l9_1)  # (None, 128, 128, 128)
+    l10_1 = layers.Activation('relu')(l9_1)
+    l10_1 = layers.Conv2D(256, 3, 1, 'same', activation='relu')(l10_1)
+    l10_1 = layers.Conv2DTranspose(128, 5, 2, 'same')(l10_1)  # (None, 128, 128, 128)
     l10_1 = layers.BatchNormalization()(l10_1)
     l10_1 = layers.Dropout(0.3)(l10_1)
-    l10_1 = layers.Activation('relu')(l10_1)
+    l10_1 = layers.concatenate([l10_1, l4_1], 3)  # (None, 128, 128, 128*2)
 
-    l11_1 = layers.Conv2DTranspose(64, 3, 2, 'same')(l10_1)  # (None, 256, 256, 64)
-    l11_1 = layers.BatchNormalization()(l11_1)
-    l11_1 = layers.Dropout(0.3)(l11_1)
+    l11_1 = layers.Activation('relu')(l10_1)
+    l11_1 = layers.Conv2D(128, 3, 1, 'same', activation='relu')(l11_1)
+    l11_1 = layers.Conv2DTranspose(64, 5, 2, 'same')(l11_1)  # (None, 256, 256, 64)
     l11_1 = layers.Activation('tanh')(l11_1)
 
     l4_2 = layers.Conv2D(32, 3, 2, 'same')(l3)  # (None, 128, 128, 32)
@@ -118,9 +125,7 @@ def build_generator():
     l10_2 = layers.Activation('relu')(l10_2)
 
     l11_2 = layers.Conv2DTranspose(64, 3, 2, 'same')(l10_2)  # (None, 256, 256, 64)
-    l11_2 = layers.BatchNormalization()(l11_2)
-    l11_2 = layers.Dropout(0.3)(l11_2)
-    l11_2 = layers.Activation('relu')(l11_2)
+    l11_2 = layers.Activation('tanh')(l11_2)
 
     l12 = layers.add([l11_1, l11_2])  # (None, 256, 256, 64)
 

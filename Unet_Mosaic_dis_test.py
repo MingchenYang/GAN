@@ -12,7 +12,7 @@ Mosaic_dir = 'S:/UCSD_ped2/Test256/training_Mosaic/'
 Label_dir = 'S:/UCSD_ped2/Test256/Unet_Reverse_dis_removal_test/'
 Output_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_dis_test/'
 # Save_path = 'S:/UCSD_ped2/Train256/save_Mosaic_dis/64000Gmodel.h5'
-Save_path = 'C:/Users/yangm90/Documents/pycharm transfer files/10.0/save_Mosaic_dis/80000Gmodel.h5'
+Save_path = 'C:/Users/yangm90/Documents/pycharm transfer files/10.0/save_Mosaic_dis/145000Gmodel.h5'
 
 
 def read_and_load_grey(path):

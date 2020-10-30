@@ -1,4 +1,4 @@
-# UCSD ped2 dataset: grayscale motion features + appearance features
+# UCSD ped2 dataset
 import os
 import cv2
 import numpy as np
@@ -12,13 +12,11 @@ Num_video = 12
 Num_video_per = [180, 180, 150, 180, 150, 180, 180, 180, 120, 150, 180, 180]
 Total_video_frames = sum(Num_video_per) - Num_video
 
-Input_dir1 = 'S:/UCSD_ped2/Test256/Unet_Reverse_test_diff/'
-Input_dir2 = 'S:/UCSD_ped2/Test256/Unet_Reverse_test_diff/'
+Input_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_Reverse_com_test_diff_removal/'
 Label_path = 'S:/UCSD_ped2/Test256/Ped2_label.mat'
 Output_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_est_diff_mask/'
 
-Input_name1 = os.listdir(Input_dir1)
-Input_name2 = os.listdir(Input_dir2)
+Input_name = os.listdir(Input_dir)
 detect = np.zeros(shape=[Total_video_frames, 1])
 
 
@@ -28,7 +26,7 @@ def read_and_load(path):
     return img
 
 
-def max_value(num_sequence, num_record, Input_dir, Input_name):
+def max_value(num_sequence, num_record):
     max_val = 0
     num = num_record
 
@@ -67,7 +65,7 @@ def abnormal_detect(img, patch_threshold, num_threshold):
     return False
 
 
-def normalize_and_detect(num_sequence, num_record, max_val, patch_threshold, num_threshold, Input_dir, Input_name):
+def normalize_and_detect(num_sequence, num_record, max_val, patch_threshold, num_threshold):
     num = num_record
 
     for num_image in range(Num_video_per[num_sequence] - 1):
@@ -90,10 +88,8 @@ def train(patch_threshold, num_threshold, TorF):
     label = scio.loadmat(Label_path)['label']
 
     for num_sequence in range(Num_video):
-        max_val1 = max_value(num_sequence, num_record, Input_dir1, Input_name1)
-        num_record1 = normalize_and_detect(num_sequence, num_record, max_val1, patch_threshold, num_threshold, Input_dir1, Input_name1)
-        max_val1 = max_value(num_sequence, num_record, Input_dir2, Input_name2)
-        num_record1 = normalize_and_detect(num_sequence, num_record, max_val1, patch_threshold, num_threshold, Input_dir2, Input_name1)
+        max_val = max_value(num_sequence, num_record)
+        num_record = normalize_and_detect(num_sequence, num_record, max_val, patch_threshold, num_threshold)
         # print(num_record)  # 179, 358, 507, 686, 835, 1014, 1193, 1372, 1491, 1640, 1819, 1998
 
     TP, TN, FP, FN = 0, 0, 0, 0
@@ -117,8 +113,8 @@ def train(patch_threshold, num_threshold, TorF):
 
 
 def main(argv=None):
-    for i in np.arange(0.05, 1.0, 0.01):
-        for j in range(1, 2):
+    for i in np.arange(0.05, 1.0, 0.001):
+        for j in range(301, 302):
             TPR, FPR, ACC = train(i, j, 0)
             if ACC < 0.5 or TPR < 0.5 or FPR < 0.05:
                 break

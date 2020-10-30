@@ -1,4 +1,5 @@
 # UCSD ped2 dataset
+# No pixel by pixel, no box by box, box next box
 import os
 import cv2
 import numpy as np
@@ -7,7 +8,7 @@ import scipy.io as scio
 L_node = 256
 W_node = 256
 L_times = 8  # the number of boxes in L_node length
-W_times = 4  # the number of boxes in W_node length
+W_times = 8  # the number of boxes in W_node length
 Num_video = 12
 Num_video_per = [180, 180, 150, 180, 150, 180, 180, 180, 120, 150, 180, 180]
 Total_video_frames = sum(Num_video_per) - Num_video
@@ -47,12 +48,12 @@ def abnormal_detect(img, patch_threshold, num_threshold):
     L_size = int(L_node / L_times)  # the length of one box in L
     W_size = int(W_node / W_times)  # the length of one box in W
 
-    for L in range(0, L_node - L_size):
-        for W in range(0, W_node - W_size):
-            L_start = L
-            L_end = L + L_size
-            W_start = W
-            W_end = W + W_size
+    for L in range(0, L_times):
+        for W in range(0, W_times):
+            L_start = L * L_size
+            L_end = ((L + 1) * L_size) - 1
+            W_start = W * W_size
+            W_end = ((W + 1) * W_size) - 1
 
             Input_patch = img[L_start: L_end, W_start: W_end]
             Input_patch_avg = np.mean(Input_patch)
@@ -113,8 +114,8 @@ def train(patch_threshold, num_threshold, TorF):
 
 
 def main(argv=None):
-    for i in np.arange(0.05, 1.0, 0.001):
-        for j in range(300, 301):
+    for i in np.arange(0.001, 1.0, 0.001):
+        for j in range(5, 6):
             TPR, FPR, ACC = train(i, j, 0)
             if ACC < 0.5 or TPR < 0.5 or FPR < 0.05:
                 break

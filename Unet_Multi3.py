@@ -22,8 +22,8 @@ Lambda1 = 15
 LSTM_layer = 64
 
 File_dir = 'S:/UCSD_ped2/Train256/training_Multi/'
-Output_dir = 'S:/UCSD_ped2/Train256/result_Multi3/'
-Save_dir = 'S:/UCSD_ped2/Train256/save_Multi3/'
+Output_dir = 'S:/UCSD_ped2/Train256/result_Multi/'
+Save_dir = 'S:/UCSD_ped2/Train256/save_Multi/'
 
 
 def read_and_load(name):
@@ -57,10 +57,16 @@ def build_generator():
     l1 = input  # (None, 256, 256, 5)
 
     l3 = layers.Conv2D(64, 3, 1, 'same', activation='relu')(l1)  # (None, 256, 256, 64)
+    l3 = layers.Conv2D(64, 5, 1, 'same')(l3)
+    l3 = layers.BatchNormalization()(l3)
 
-    l4_2 = layers.Conv2D(32, 3, 2, 'same')(l3)  # (None, 128, 128, 32)
+    l4_2 = layers.LeakyReLU(0.2)(l3)
+    l4_2 = layers.Conv2D(32, 3, 2, 'same', activation='relu')(l4_2)  # (None, 128, 128, 32)
+    l4_2 = layers.Conv2D(32, 5, 1, 'same')(l4_2)
+    l4_2 = layers.BatchNormalization()(l4_2)
 
-    l5_2 = layers.Conv2D(5, 3, 2, 'same')(l4_2)  # (None, 64, 64, 5)
+    l5_2 = layers.LeakyReLU(0.2)(l4_2)
+    l5_2 = layers.Conv2D(5, 3, 2, 'same', activation='relu')(l5_2)  # (None, 64, 64, 5)
     l5_2_1 = tf.reshape(l5_2[:, :, :, 0], shape=(-1, 1, LSTM_layer, LSTM_layer, Channel))
     l5_2_2 = tf.reshape(l5_2[:, :, :, 1], shape=(-1, 1, LSTM_layer, LSTM_layer, Channel))
     l5_2_3 = tf.reshape(l5_2[:, :, :, 2], shape=(-1, 1, LSTM_layer, LSTM_layer, Channel))
