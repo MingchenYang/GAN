@@ -10,11 +10,13 @@ W_node = 256
 L_times = 8  # the number of boxes in L_node length
 W_times = 8  # the number of boxes in W_node length
 Num_video = 12
-Num_video_per = [180, 180, 150, 180, 150, 180, 180, 180, 120, 150, 180, 180]
+# Num_video_per = [180, 180, 150, 180, 150, 180, 180, 180, 120, 150, 180, 180]
+Num_video_per = [175, 175, 145, 175, 145, 175, 175, 175, 115, 145, 175, 175]
 Total_video_frames = sum(Num_video_per) - Num_video
 
-Input_dir = 'S:/UCSD_ped2/Test256/Unet_Reverse_dis_removal_test_diff/'
-Label_path = 'S:/UCSD_ped2/Test256/Ped2_label.mat'
+Input_dir = 'S:/UCSD_ped2/Test256/Unet_Multi_test_diff_removal/'
+# Label_path = 'S:/UCSD_ped2/Test256/Ped2_label.mat'
+Label_path = 'S:/UCSD_ped2/Test256/Ped2_label_Multi.mat'
 Output_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_est_diff_mask/'
 
 Input_name = os.listdir(Input_dir)
@@ -86,12 +88,14 @@ def train(patch_threshold, num_threshold, TorF):
     num_record = 0
 
     # Get label from mat file
-    label = scio.loadmat(Label_path)['label']
+    # label = scio.loadmat(Label_path)['label']
+    label = scio.loadmat(Label_path)['label_Multi']
 
     for num_sequence in range(Num_video):
         max_val = max_value(num_sequence, num_record)
         num_record = normalize_and_detect(num_sequence, num_record, max_val, patch_threshold, num_threshold)
         # print(num_record)  # 179, 358, 507, 686, 835, 1014, 1193, 1372, 1491, 1640, 1819, 1998
+        # 174, 348, 492, 666, 810, 984, 1158, 1332, 1446, 1590, 1764, 1938
 
     TP, TN, FP, FN = 0, 0, 0, 0
     for i in range(Total_video_frames):

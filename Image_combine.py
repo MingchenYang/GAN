@@ -9,8 +9,8 @@ Output_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_Reverse_com_test_diff/'
 Input_name1 = os.listdir(Input_dir1)
 Input_name2 = os.listdir(Input_dir2)
 
-weights1 = 0.5
-weights2 = 0.5
+weights1 = 0.2
+weights2 = 0.8
 
 
 def read_and_load(path):

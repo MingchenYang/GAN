@@ -10,7 +10,7 @@ Channel = 1
 
 File_dir = 'S:/UCSD_ped2/Test256/training_Multi/'
 Output_dir = 'S:/UCSD_ped2/Test256/Unet_Multi_test/'
-Save_path = 'S:/UCSD_ped2/Train256/save_Multi/94000Gmodel.h5'
+Save_path = 'S:/UCSD_ped2/Train256/save_Multi/96000Gmodel.h5'
 # Save_path = 'C:/Users/yangm90/Documents/pycharm transfer files/8.0/save_Mosaic/200000Gmodel.h5'
 
 

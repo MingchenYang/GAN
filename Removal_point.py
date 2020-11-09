@@ -5,8 +5,8 @@ import numpy as np
 L_node = 240
 W_node = 360
 Channel = 3
-Kernel_size = 3
-Sigma = 3
+# Kernel_size = 3
+# Sigma = 3
 Radius = 5
 
 Input_dir = 'S:/UCSD_Anomaly_Dataset.v1p2/UCSDped2/Test/'

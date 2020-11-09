@@ -6,16 +6,14 @@ import scipy.io as scio
 
 L_node = 256
 W_node = 256
-L_times = 8  # the number of boxes in L_node length
+L_times = 16  # the number of boxes in L_node length
 W_times = 16  # the number of boxes in W_node length
 Num_video = 12
-# Num_video_per = [180, 180, 150, 180, 150, 180, 180, 180, 120, 150, 180, 180]
-Num_video_per = [175, 175, 145, 175, 145, 175, 175, 175, 115, 145, 175, 175]
+Num_video_per = [180, 180, 150, 180, 150, 180, 180, 180, 120, 150, 180, 180]
 Total_video_frames = sum(Num_video_per) - Num_video
 
-Input_dir = 'S:/UCSD_ped2/Test256/Unet_Multi_test_diff_removal/'
-# Label_path = 'S:/UCSD_ped2/Test256/Ped2_label.mat'
-Label_path = 'S:/UCSD_ped2/Test256/Ped2_label_Multi.mat'
+Input_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_Reverse_com_test_diff/'
+Label_path = 'S:/UCSD_ped2/Test256/Ped2_label.mat'
 Output_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_est_diff_mask/'
 
 Input_name = os.listdir(Input_dir)
@@ -87,8 +85,7 @@ def train(patch_threshold, num_threshold, TorF):
     num_record = 0
 
     # Get label from mat file
-    # label = scio.loadmat(Label_path)['label']
-    label = scio.loadmat(Label_path)['label_Multi']
+    label = scio.loadmat(Label_path)['label']
 
     for num_sequence in range(Num_video):
         max_val = max_value(num_sequence, num_record)

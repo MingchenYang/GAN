@@ -5,8 +5,12 @@ L_node = 256
 W_node = 256
 
 Input_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_Reverse_com_test_diff/'
-Back_dir = 'S:/UCSD_ped2/Test256/label_dis_removal/'
+Back_dir = 'S:/UCSD_ped2/Test256/training_removal/'
 Output_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_Reverse_com_test_diff_removal/'
+
+# Input_dir = 'S:/UCSD_ped2/Test256/Unet_Multi_test_diff/'
+# Back_dir = 'S:/UCSD_ped2/Test256/training_Multi_frame_removal/'
+# Output_dir = 'S:/UCSD_ped2/Test256/Unet_Multi_test_diff_removal/'
 
 
 def train():
@@ -19,16 +23,17 @@ def train():
         Input_path = Input_dir + input_name
         Back_path = Back_dir + back_name
 
-        Input_image = cv2.imread(Input_path, 1)
+        Input_image = cv2.imread(Input_path, 0)
         Back_image = cv2.imread(Back_path, 0)
 
         for l in range(L_node):
             for w in range(W_node):
                 if Back_image[l, w] == 0:
-                    Input_image[l, w, :] = 0
+                    # Input_image[l, w, :] = 0
+                    Input_image[l, w] = 0
 
         print(Input_path)
-        cv2.imwrite(Output_dir + input_name, Input_image)
+        cv2.imwrite(Output_dir + back_name, Input_image)
 
 
 def main(argv=None):

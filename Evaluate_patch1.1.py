@@ -7,12 +7,12 @@ import scipy.io as scio
 L_node = 256
 W_node = 256
 L_times = 8  # the number of boxes in L_node length
-W_times = 8  # the number of boxes in W_node length
+W_times = 16  # the number of boxes in W_node length
 Num_video = 12
 Num_video_per = [180, 180, 150, 180, 150, 180, 180, 180, 120, 150, 180, 180]
 Total_video_frames = sum(Num_video_per) - Num_video
 
-Input_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_test_Reverse_diff/'
+Input_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_Reverse_com_test_diff/'
 Label_path = 'S:/UCSD_ped2/Test256/Ped2_label.mat'
 Output_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_est_diff_mask/'
 
@@ -106,15 +106,15 @@ def train(patch_threshold, num_threshold, TorF):
     TPR = TP / (TP + FN)
     FPR = FP / (FP + TN)
     ACC = (TP + TN) / Total_video_frames
-    print('When pixel threshold = {:.2f}, num threshold = {}, TPR = {:.4f}, FPR = {:.4f}, ACC = {:.4f}'.format(
+    print('When pixel threshold = {:.3f}, num threshold = {}, TPR = {:.4f}, FPR = {:.4f}, ACC = {:.4f}'.format(
         patch_threshold, num_threshold, TPR, FPR, ACC))
 
     return TPR, FPR, ACC
 
 
 def main(argv=None):
-    for i in np.arange(0.01, 1.0, 0.01):
-        for j in range(1, 2):
+    for i in np.arange(0.04, 1.0, 0.001):
+        for j in range(300, 301):
             TPR, FPR, ACC = train(i, j, 0)
             if ACC < 0.5 or TPR < 0.5 or FPR < 0.05:
                 break
