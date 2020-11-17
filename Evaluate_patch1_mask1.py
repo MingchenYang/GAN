@@ -85,9 +85,12 @@ def abnormal_detect(img, back_3C, patch_threshold, num_threshold, name):
             if num >= num_threshold:
                 detect_status = 1
 
-    mask = np.array(mask)
-    img_mask = cv2.addWeighted(back_3C, alpha, mask, beta, gamma)
-    cv2.imwrite(Output_dir + name[0: 4] + '-' + str(detect_status) + '.jpg', img_mask)
+    if detect_status:
+        mask = np.array(mask)
+        img_mask = cv2.addWeighted(back_3C, alpha, mask, beta, gamma)
+        cv2.imwrite(Output_dir + name[0: 4] + '-' + str(detect_status) + '.jpg', img_mask)
+    else:
+        cv2.imwrite(Output_dir + name[0: 4] + '-' + str(detect_status) + '.jpg', back_3C)
 
     return detect_status
 
@@ -144,7 +147,7 @@ def train(patch_threshold, num_threshold):
 
 
 def main(argv=None):
-    TPR, FPR, ACC = train(0.11, 50)
+    TPR, FPR, ACC = train(0.081, 1)
 
 
 if __name__ == '__main__':

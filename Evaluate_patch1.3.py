@@ -7,7 +7,7 @@ import scipy.io as scio
 L_node = 256
 W_node = 256
 L_times = 16  # the number of boxes in L_node length
-W_times = 16  # the number of boxes in W_node length
+W_times = 32  # the number of boxes in W_node length
 Num_video = 12
 Num_video_per = [180, 180, 150, 180, 150, 180, 180, 180, 120, 150, 180, 180]
 Total_video_frames = sum(Num_video_per) - Num_video
@@ -113,8 +113,8 @@ def train(patch_threshold, num_threshold, TorF):
 
 
 def main(argv=None):
-    for i in np.arange(0.05, 1.0, 0.001):
-        for j in range(300, 301):
+    for i in np.arange(0.03, 1.0, 0.001):
+        for j in range(220, 221):
             TPR, FPR, ACC = train(i, j, 0)
             if ACC < 0.5 or TPR < 0.5 or FPR < 0.05:
                 break
