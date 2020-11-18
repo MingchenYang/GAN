@@ -6,8 +6,8 @@ import scipy.io as scio
 
 L_node = 256
 W_node = 256
-L_times = 16  # the number of boxes in L_node length
-W_times = 32  # the number of boxes in W_node length
+L_times = 8  # the number of boxes in L_node length
+W_times = 16  # the number of boxes in W_node length
 Num_video = 12
 Num_video_per = [180, 180, 150, 180, 150, 180, 180, 180, 120, 150, 180, 180]
 Total_video_frames = sum(Num_video_per) - Num_video

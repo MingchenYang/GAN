@@ -1,8 +1,8 @@
 import os
 import cv2
 
-Input_dir = 'S:/UCSD_ped2/Test/training_full_removal/'
-Output_dir = 'S:/UCSD_ped2/Test256/training_full_removal/'
+Input_dir = 'S:/UCSD_ped2/Test/mask/'
+Output_dir = 'S:/UCSD_ped2/Test256/mask/'
 
 for file_name in os.listdir(Input_dir):
     file_path = Input_dir + file_name

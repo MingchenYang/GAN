@@ -1,5 +1,5 @@
 # UCSD ped2 dataset
-# Add mask on every image in this dataset, all of abnormal patches will be masked on the abnormal images
+# Save every mask image and compare it with label mask
 import os
 import cv2
 import numpy as np
@@ -7,8 +7,8 @@ import scipy.io as scio
 
 L_node = 256
 W_node = 256
-L_times = 16  # the number of boxes in L_node length
-W_times = 32  # the number of boxes in W_node length
+L_times = 8  # the number of boxes in L_node length
+W_times = 16  # the number of boxes in W_node length
 Num_video = 12
 Num_video_per = [180, 180, 150, 180, 150, 180, 180, 180, 120, 150, 180, 180]
 Total_video_frames = sum(Num_video_per) - Num_video
@@ -19,11 +19,13 @@ gamma = 0
 
 Input_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_Reverse_com_test_diff/'
 Back_dir = 'S:/UCSD_ped2/Test256/training/'
+Mask_dir = 'S:/UCSD_ped2/Test256/mask/'
 Label_path = 'S:/UCSD_ped2/Test256/Ped2_label.mat'
 Output_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_Reverse_com_test_mask/'
 
 Input_name = os.listdir(Input_dir)
 Back_name = os.listdir(Back_dir)
+Mask_name = os.listdir(Mask_dir)
 detect = np.zeros(shape=[Total_video_frames, 1])
 
 
@@ -33,8 +35,8 @@ def read_and_load(path):
     return img
 
 
-def read_and_load_3C(path):
-    img = cv2.imread(path, 1)
+def read_and_load_256(path):
+    img = cv2.imread(path, 0)
     return img
 
 
@@ -54,19 +56,38 @@ def max_value(num_sequence, num_record):
     return max_val
 
 
-def get_mask(back_3C, y_start, x_start, y_end, x_end):
-    zero_mask = np.zeros_like(back_3C, dtype=np.uint8)
-    mask = cv2.rectangle(zero_mask, (x_start, y_start), (x_end, y_end), color=(0, 0, 100), thickness=-1)
+def get_mask(back, y_start, x_start, y_end, x_end):
+    zero_mask = np.zeros_like(back, dtype=np.uint8)
+    mask = cv2.rectangle(zero_mask, (x_start, y_start), (x_end, y_end), color=255, thickness=-1)
     return mask
 
 
-def abnormal_detect(img, back_3C, patch_threshold, num_threshold, name):
+def detect_positive(mask, mask_label, name):
+    num_label = 0
+    num = 0
+
+    for l in range(L_node):
+        for w in range(W_node):
+            if mask_label[l, w] > 0:
+                num_label += 1
+                if mask[l, w] > 0:
+                    num += 1
+
+    print(name, num_label, num)
+
+    if num >= num_label * 0.4:
+        return True
+    else:
+        return False
+
+
+def abnormal_detect(img, back, mask_label, patch_threshold, num_threshold, name, label_status):
     num = 0
     detect_status = 0
     L_size = int(L_node / L_times)  # the length of one box in L
     W_size = int(W_node / W_times)  # the length of one box in W
 
-    mask = np.zeros_like(back_3C, dtype=np.uint8)
+    mask = np.zeros_like(back, dtype=np.uint8)
 
     for L in range(0, L_node - L_size):
         for W in range(0, W_node - W_size):
@@ -79,37 +100,43 @@ def abnormal_detect(img, back_3C, patch_threshold, num_threshold, name):
             Input_patch_avg = np.mean(Input_patch)
 
             if Input_patch_avg > patch_threshold:
-                mask = mask + get_mask(back_3C, L_start, W_start, L_end, W_end)
+                mask = cv2.add(mask, get_mask(back, L_start, W_start, L_end, W_end))
                 num += 1
 
             if num >= num_threshold:
                 detect_status = 1
 
-    if detect_status:
-        mask = np.array(mask)
-        img_mask = cv2.addWeighted(back_3C, alpha, mask, beta, gamma)
-        cv2.imwrite(Output_dir + name[0: 4] + '-' + str(detect_status) + '.jpg', img_mask)
+    mask = np.array(mask)
+    if (detect_status == 1) & (label_status == 1):
+        detect_status_new = detect_positive(mask, mask_label, name)
+
+        if detect_status != detect_status_new:
+            cv2.imwrite(Output_dir + name, mask)
+
+        return detect_status_new
     else:
-        cv2.imwrite(Output_dir + name[0: 4] + '-' + str(detect_status) + '.jpg', back_3C)
-
-    return detect_status
+        return detect_status
 
 
-def normalize_and_detect(num_sequence, num_record, max_val, patch_threshold, num_threshold):
+def normalize_and_detect(num_sequence, num_record, max_val, patch_threshold, num_threshold, label):
     num = num_record
 
     for num_image in range(Num_video_per[num_sequence] - 1):
         input_name = Input_name[num]
         back_name = Back_name[num]
+        mask_label_name = Mask_name[num]
 
         Image_path = Input_dir + input_name
         image = read_and_load(Image_path)
 
         back_path = Back_dir + back_name
-        back_3C = read_and_load_3C(back_path)
+        back = read_and_load_256(back_path)
+
+        mask_label_path = Mask_dir + mask_label_name
+        mask_label = read_and_load_256(mask_label_path)
 
         image = image / max_val
-        detect[num] = abnormal_detect(image, back_3C, patch_threshold, num_threshold, back_name)
+        detect[num] = abnormal_detect(image, back, mask_label, patch_threshold, num_threshold, back_name, label[num])
 
         num += 1
     return num
@@ -123,7 +150,7 @@ def train(patch_threshold, num_threshold):
 
     for num_sequence in range(Num_video):
         max_val = max_value(num_sequence, num_record)
-        num_record = normalize_and_detect(num_sequence, num_record, max_val, patch_threshold, num_threshold)
+        num_record = normalize_and_detect(num_sequence, num_record, max_val, patch_threshold, num_threshold, label)
         # print(num_record)  # 179, 358, 507, 686, 835, 1014, 1193, 1372, 1491, 1640, 1819, 1998
 
     TP, TN, FP, FN = 0, 0, 0, 0
