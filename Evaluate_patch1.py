@@ -13,10 +13,11 @@ Num_video = 12
 Num_video_per = [175, 175, 145, 175, 145, 175, 175, 175, 115, 145, 175, 175]
 Total_video_frames = sum(Num_video_per) - Num_video
 
-Input_dir = 'S:/UCSD_ped2/Test256/Unet_Multi_test_diff_removal/'
-# Label_path = 'S:/UCSD_ped2/Test256/Ped2_label.mat'
-Label_path = 'S:/UCSD_ped2/Test256/Ped2_label_Multi.mat'
-Output_dir = 'S:/UCSD_ped2/Test256/Unet_Mosaic_est_diff_mask/'
+Input_dir = 'S:/UCSD_ped1/Test256/Unet_Mosaic_test_diff/'
+# Input_dir = 'S:/UCSD_ped2/Test256/Unet_Multi_test_diff_removal/'
+Label_path = 'S:/UCSD_ped1/Test256/Ped1_label.mat'
+# Label_path = 'S:/UCSD_ped2/Test256/Ped2_label_Multi.mat'
+Output_dir = 'S:/UCSD_ped1/Test256/Unet_Mosaic_test_diff_mask/'
 
 Input_name = os.listdir(Input_dir)
 detect = np.zeros(shape=[Total_video_frames, 1])
@@ -87,8 +88,8 @@ def train(patch_threshold, num_threshold, TorF):
     num_record = 0
 
     # Get label from mat file
-    # label = scio.loadmat(Label_path)['label']
-    label = scio.loadmat(Label_path)['label_Multi']
+    label = scio.loadmat(Label_path)['label']
+    # label = scio.loadmat(Label_path)['label_Multi']
 
     for num_sequence in range(Num_video):
         max_val = max_value(num_sequence, num_record)
@@ -116,8 +117,8 @@ def train(patch_threshold, num_threshold, TorF):
 
 
 def main(argv=None):
-    for i in np.arange(0.05, 1.0, 0.001):
-        for j in range(300, 301):
+    for i in np.arange(0.05, 1.0, 0.005):
+        for j in range(200, 201):
             TPR, FPR, ACC = train(i, j, 0)
             if ACC < 0.5 or TPR < 0.5 or FPR < 0.05:
                 break

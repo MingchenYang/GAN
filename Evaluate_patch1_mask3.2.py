@@ -1,5 +1,5 @@
 # UCSD ped2 dataset
-# Save every mask image and compare it with label mask
+# Compare every labelled positive image with label mat, get the result in pixel-level criterion
 import os
 import cv2
 import numpy as np
@@ -73,8 +73,6 @@ def detect_positive(mask, mask_label, name):
                 if mask[l, w] > 0:
                     num += 1
 
-    print(name, num_label, num)
-
     if num >= num_label * 0.4:
         return True
     else:
@@ -109,10 +107,6 @@ def abnormal_detect(img, back, mask_label, patch_threshold, num_threshold, name,
     mask = np.array(mask)
     if (detect_status == 1) & (label_status == 1):
         detect_status_new = detect_positive(mask, mask_label, name)
-
-        if detect_status != detect_status_new:
-            cv2.imwrite(Output_dir + name, mask)
-
         return detect_status_new
     else:
         return detect_status
@@ -174,7 +168,9 @@ def train(patch_threshold, num_threshold):
 
 
 def main(argv=None):
-    TPR, FPR, ACC = train(0.070, 1)
+    for i in np.arange(0.02, 1.0, 0.005):
+        for j in range(1, 2):
+            TPR, FPR, ACC = train(i, j)
 
 
 if __name__ == '__main__':
